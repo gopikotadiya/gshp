@@ -1,0 +1,15 @@
+.hero-section {
+    background-color: #f0f2f5;
+    padding: 50px 20px;
+    text-align: center;
+  }
+  
+  .hero-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .search-input {
+    margin-bottom: 10px;
+  }
