@@ -1,11 +1,19 @@
 import React from 'react';
 import { Layout, Menu, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/Header.css';
 
 const { Header } = Layout;
 
 const AppHeader = () => {
+  const navigate = useNavigate();
+  const role = localStorage.getItem('role');
+
+  const handleLogout = () => {
+    localStorage.removeItem('role');
+    navigate('/login');
+  };
+
   return (
     <Header className="header">
       <div className="logo">GSP - Global Student Housing</div>
@@ -15,12 +23,11 @@ const AppHeader = () => {
         <Menu.Item key="3" className="menu-item"><Link to="/contact">Contact</Link></Menu.Item>
       </Menu>
       <div>
-        <Button type="primary" className="login-button">
-          <Link to="/login">Login</Link>
-        </Button>
-        <Button type="default">
-          <Link to="/signup">Sign Up</Link>
-        </Button>
+        {role && (
+          <Button type="primary" danger onClick={handleLogout}>
+            Logout
+          </Button>
+        )}
       </div>
     </Header>
   );

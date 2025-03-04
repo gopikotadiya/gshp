@@ -1,10 +1,35 @@
-import React from 'react';
-import { Form, Input, Button, Card } from 'antd';
+import React, { useState } from 'react';
+import { Form, Input, Button, Card, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const onFinish = (values) => {
-    console.log('Received values:', values);
+    setLoading(true);
+    // Simulate API call to backend for authentication
+    setTimeout(() => {
+      const { username, password } = values;
+      // Mock roles based on username (replace with actual backend logic)
+      let role = '';
+      if (username === 'admin' && password === 'admin123') {
+        role = 'admin';
+      } else if (username === 'tenant' && password === 'tenant123') {
+        role = 'tenant';
+      } else if (username === 'landlord' && password === 'landlord123') {
+        role = 'landlord';
+      } else {
+        message.error('Invalid credentials');
+        setLoading(false);
+        return;
+      }
+      localStorage.setItem('role', role); // Store role in localStorage
+      message.success('Login successful');
+      navigate(`/${role}/dashboard`); // Redirect to role-specific dashboard
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -23,7 +48,7 @@ const Login = () => {
           <Input.Password prefix={<LockOutlined />} placeholder="Password" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" block>
+          <Button type="primary" htmlType="submit" block loading={loading}>
             Log in
           </Button>
         </Form.Item>
