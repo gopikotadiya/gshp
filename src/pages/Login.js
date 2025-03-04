@@ -1,12 +1,22 @@
+// src/pages/Login.js
 import React from 'react';
-import { Form, Input, Button, Card } from 'antd';
+import { Form, Input, Button, Card, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../redux/actions/authActions';
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const onFinish = (values) => {
-    console.log('Received values:', values);
-    // Here you can make a POST request with the form data
-    // Example: axios.post('/api/login', values);
+    const { email, password } = values;
+    dispatch(loginUser(email, password))
+      .then(() => {
+        message.success('Login successful!');
+      })
+      .catch((error) => {
+        message.error(error || 'Login failed. Please try again.');
+      });
   };
 
   return (
