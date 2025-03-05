@@ -24,3 +24,27 @@
   .login-button {
     margin-right: 10px;
   }
+
+  .auth-section {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-profile {
+    display: flex;
+    align-items: center;
+  }
+  
+  .auth-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .avatar {
+    margin-right: 10px; /* Adjust margin as needed */
+  }
+  
+  .auth-buttons > .ant-btn {
+    margin-right: 10px; /* Adjust button margin */
+  }
+  

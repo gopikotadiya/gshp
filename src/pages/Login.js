@@ -1,21 +1,28 @@
 // src/pages/Login.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, Card, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../redux/actions/authActions';
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // React Router's navigate function
 
+  const [error, setError] = useState(null);
   const onFinish = (values) => {
     const { email, password } = values;
     dispatch(loginUser(email, password))
       .then(() => {
         message.success('Login successful!');
+        setError(null);
+        navigate('/');
       })
       .catch((error) => {
         message.error(error || 'Login failed. Please try again.');
+        setError(error || 'Login failed. Please try again.');
+        console.log(error);
       });
   };
 
@@ -43,7 +50,7 @@ const Login = () => {
         >
           <Input.Password prefix={<LockOutlined />} placeholder="Password" />
         </Form.Item>
-
+        {error && <div className="error-message">{error}</div>}
         {/* Submit Button */}
         <Form.Item>
           <Button type="primary" htmlType="submit" block>
