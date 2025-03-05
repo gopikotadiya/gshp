@@ -81,10 +81,10 @@ const AppHeader = () => {
           </div>
         ) : (
           <div className="auth-buttons">
-            <Button type="primary" onClick={() => setIsLoginModalVisible(true)}>
+            <Button className="login-button" variant="outlined" onClick={() => setIsLoginModalVisible(true)}>
               Login
             </Button>
-            <Button type="primary" onClick={() => setIsRegisterModalVisible(true)}>
+            <Button className="register-button" variant="outlined" onClick={() => setIsRegisterModalVisible(true)}>
               Register
             </Button>
           </div>
