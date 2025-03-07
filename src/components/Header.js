@@ -10,12 +10,13 @@ import '../css/Header.css';
 const { Header } = Layout;
 const { Option } = Select;
 
-const AppHeader = () => {
+const AppHeader = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isLoggedIn, error } = useSelector((state) => state.auth);
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
   const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
+  const { handleClick, onLogoClick } = props;
 
   const handleRegister = (values) => {
     const { email, first_name, last_name, password, role } = values;
@@ -63,13 +64,9 @@ const AppHeader = () => {
 
   return (
     <Header className="header">
-      <div className="logo">GSP - Global Student Housing</div>
-      {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} className="menu">
-        <Menu.Item key="1" className="menu-item"><Link to="/">Home</Link></Menu.Item>
-        <Menu.Item key="2" className="menu-item"><Link to="/about">About</Link></Menu.Item>
-        <Menu.Item key="3" className="menu-item"><Link to="/contact">Contact</Link></Menu.Item>
-      </Menu> */}
-      {/* Centered Navigation Menu */}
+      <div className="logo" onClick={onLogoClick} >
+        GSP - Global Student Housing
+      </div>
       <Menu
         mode="horizontal"
         className="nav-menu"
@@ -78,13 +75,13 @@ const AppHeader = () => {
       >
         {isLoggedIn && user?.role === 'landlord' && (
           <>
-            <Menu.Item key="list-property" icon={<HomeFilled />}>
+            <Menu.Item key="list-property" icon={<HomeFilled />} onClick={handleClick}> 
               List a Property
             </Menu.Item>
             <Menu.Item className="ant-menu-item-divider" key="divider" disabled style={{ cursor: 'default' }}>
               |
             </Menu.Item>
-            <Menu.Item key="rental-insights">
+            <Menu.Item key="rental-insights" onClick={handleClick}>
               Rental Insights
             </Menu.Item>
           </>

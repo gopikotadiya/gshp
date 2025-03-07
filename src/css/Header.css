@@ -17,10 +17,6 @@
   transition: color 0.3s ease-in-out;
 }
 
-.logo:hover {
-  color: #d54557;
-}
-
 /* Authentication Section */
 .auth-section {
   display: flex;
