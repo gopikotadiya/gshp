@@ -27,23 +27,6 @@
   align-items: center;
 }
 
-/* Buttons */
-.auth-buttons .ant-btn {
-  background-color: #d54557;
-  color: white;
-  border: none;
-  font-weight: bold;
-  margin-right: 12px;
-  padding: 8px 16px;
-  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
-  border-radius: 6px;
-}
-
-.auth-buttons .ant-btn:hover {
-  background-color: #1a1a5c; /* Change to 1a1a5c on hover */
-  transform: scale(1.05);
-}
-
 /* Avatar & Logout */
 .user-profile {
   display: flex;
@@ -79,15 +62,13 @@
 }
 
 /* Modals */
-.login-modal .ant-modal-content,
-.register-modal .ant-modal-content {
+.login-modal .ant-modal-content {
   background-color: #ffffff;
   border-radius: 8px;
   padding: 20px;
 }
 
-.login-modal .ant-btn,
-.register-modal .ant-btn {
+.blue-btn .ant-btn{
   background-color: #1a1a5c;
   border: none;
   color: white;
@@ -95,8 +76,7 @@
   transition: background-color 0.3s ease-in-out;
 }
 
-.login-modal .ant-btn:hover,
-.register-modal .ant-btn:hover {
+.blue-btn .ant-btn:hover {
   background-color: #15154c;
 }
 
@@ -106,4 +86,62 @@
   font-size: 14px;
   margin-bottom: 10px;
   text-align: center;
+}
+
+/* Navigation Menu */
+.nav-menu {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  background: transparent !important;
+  border-bottom: none !important;
+  color: white !important;
+}
+
+.nav-menu .ant-menu-item {
+  color: white !important;
+  font-weight: 500;
+  padding: 0 15px !important;
+  border-bottom: none !important;
+  display: flex;
+  align-items: center;
+}
+.nav-menu .ant-menu-item-divider {
+  color: white !important;
+  font-weight: 500;
+  padding: 0 0px !important;
+
+}
+
+.nav-menu .ant-menu-item:hover {
+  color: white !important;
+  opacity: 0.8;
+  border-bottom-color: white;
+}
+
+.nav-menu .ant-menu-item .anticon {
+  color: white !important;
+  margin-right: 8px;
+  
+}
+
+/* .nav-menu .ant-menu-item:hover .anticon {
+  color: #d54557 !important;
+} */
+
+/* Buttons */
+.ant-btn {
+  background-color: #d54557;
+  color: white;
+  border: none;
+  font-weight: bold;
+  margin-right: 12px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  border-radius: 6px;
+}
+
+.ant-btn:hover {
+  background-color: #1a1a5c; /* Change to 1a1a5c on hover */
+  transform: scale(1.05);
 }

@@ -1,7 +1,7 @@
 // Header.js
 import React, { useState } from 'react';
-import { Layout, Button, Avatar, Modal, Form, Input, message, Select } from 'antd';
-import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
+import { Layout, Button, Avatar, Modal, Form, Input, message, Select, Menu } from 'antd';
+import { UserOutlined, LockOutlined, MailOutlined, FormOutlined, BarChartOutlined, FormatPainterOutlined, HomeOutlined, HomeFilled } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser, loginUser, registerUser } from '../redux/actions/authActions';
@@ -69,22 +69,63 @@ const AppHeader = () => {
         <Menu.Item key="2" className="menu-item"><Link to="/about">About</Link></Menu.Item>
         <Menu.Item key="3" className="menu-item"><Link to="/contact">Contact</Link></Menu.Item>
       </Menu> */}
+      {/* Centered Navigation Menu */}
+      <Menu
+        mode="horizontal"
+        className="nav-menu"
+        selectedKeys={[]}
+        style={{ borderBottom: 'none', background: 'transparent' }}
+      >
+        {isLoggedIn && user?.role === 'landlord' && (
+          <>
+            <Menu.Item key="list-property" icon={<HomeFilled />}>
+              List a Property
+            </Menu.Item>
+            <Menu.Item className="ant-menu-item-divider" key="divider" disabled style={{ cursor: 'default' }}>
+              |
+            </Menu.Item>
+            <Menu.Item key="rental-insights">
+              Rental Insights
+            </Menu.Item>
+          </>
+        )}
+
+        {isLoggedIn && user?.role === 'tenant' && (
+          <>
+            <Menu.Item key="explore-apartments" icon={<HomeFilled />}>
+              Explore Apartments
+            </Menu.Item>
+            <Menu.Item className="ant-menu-item-divider" key="divider3" disabled style={{ cursor: 'default' }}>
+              |
+            </Menu.Item>
+            <Menu.Item key="find-roommate">
+              Find Your Roommate
+            </Menu.Item>
+            <Menu.Item className="ant-menu-item-divider" key="divider4" disabled style={{ cursor: 'default' }}>
+              |
+            </Menu.Item>
+            <Menu.Item key="rental-hub">
+              My Rental Hub
+            </Menu.Item>
+          </>
+        )}
+      </Menu>
       <div className="auth-section">
         {isLoggedIn ? (
           <div className="user-profile">
-            <Avatar className="avatar" style={{ backgroundColor: '#1890ff' }}>
+            <Avatar className="avatar">
               {getInitials()}
             </Avatar>
-            <Button type="primary" onClick={handleLogout}>
+            <Button className="login-button" variant="outlined" onClick={handleLogout}>
               Logout
             </Button>
           </div>
         ) : (
-          <div className="auth-buttons">
-            <Button className="login-button" variant="outlined" onClick={() => setIsLoginModalVisible(true)}>
+          <div>
+            <Button onClick={() => setIsLoginModalVisible(true)}>
               Login
             </Button>
-            <Button className="register-button" variant="outlined" onClick={() => setIsRegisterModalVisible(true)}>
+            <Button onClick={() => setIsRegisterModalVisible(true)}>
               Register
             </Button>
           </div>
@@ -120,8 +161,8 @@ const AppHeader = () => {
             <Input.Password prefix={<LockOutlined />} placeholder="Password" />
           </Form.Item>
           {error && <div className="error-message">{error}</div>}
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+          <Form.Item className="blue-btn">
+            <Button htmlType="submit" block>
               Log in
             </Button>
           </Form.Item>
@@ -132,6 +173,7 @@ const AppHeader = () => {
         title="Register"
         visible={isRegisterModalVisible}
         onCancel={() => setIsRegisterModalVisible(false)}
+        className="login-modal"
         footer={null}
       >
         <Form name="register" onFinish={handleRegister}>
@@ -204,8 +246,8 @@ const AppHeader = () => {
             </Select>
           </Form.Item>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+          <Form.Item className="blue-btn">
+            <Button htmlType="submit" block>
               Register
             </Button>
           </Form.Item>
