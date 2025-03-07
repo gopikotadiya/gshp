@@ -1,8 +1,8 @@
 import React from 'react';
 import { Row, Col, Card } from 'antd';
 import {
+  HomeOutlined,
   SafetyOutlined,
-  TeamOutlined,
   ToolOutlined,
 } from '@ant-design/icons';
 import '../css/FeaturesSection.css';
@@ -17,15 +17,15 @@ const FeaturesSection = () => {
       icon: <SafetyOutlined className="feature-icon" />,
     },
     {
-      title: 'Roommate Matching',
-      description: 'Connect with compatible roommates.',
-      icon: <TeamOutlined className="feature-icon" />,
+      title: 'Manage Listings',
+      description: 'Add and manage rental properties with ease.',
+      icon: <HomeOutlined className="feature-icon" />,
     },
     {
       title: 'Maintenance Support',
       description: '24/7 support for all your housing needs.',
       icon: <ToolOutlined className="feature-icon" />,
-    },
+    }
   ];
 
   return (
