@@ -141,3 +141,32 @@
   background-color: #1a1a5c; /* Change to 1a1a5c on hover */
   transform: scale(1.05);
 }
+
+/* .ant-tabs .ant-tabs-nav-list .ant-tabs-ink-bar {
+  background-color: #d54557; 
+} */
+
+/* Global Ant Design Tabs override */
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+  padding: 12px 20px;
+  transition: background 0.1s ease;
+  border-radius: 6px 6px 0 0 !important;
+  border: none !important;
+  background: transparent;
+}
+
+/* .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab:hover {
+  background-color: #e6f7ff !important;
+} */
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active {
+  background-color: #d54557 !important;
+}
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: white !important;
+}
+
+.ant-tabs-nav {
+  margin: 0 !important;
+}
