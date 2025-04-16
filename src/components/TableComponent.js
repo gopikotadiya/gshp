@@ -14,9 +14,9 @@ const TableComponent = ({
   onSearch,
   onFilterChange,
   searchPlaceholder = 'Search...',
-}) => {
+}) => { 
   return (
-    <Content className="site-layout-background" style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
+    <Content className="site-layout-background" style={{ padding: '24px', margin: '0 auto' }}>
       <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <Title level={4} style={{ margin: 0 }}>{headerTitle}</Title>

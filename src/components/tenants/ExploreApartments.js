@@ -14,7 +14,7 @@ const ExploreApartments = () => {
   const [isApplicationModalVisible, setIsApplicationModalVisible] = useState(false);
   const [selectedApartment, setSelectedApartment] = useState(null);
   const [form] = Form.useForm();
-  const pageSize = 9;
+  const pageSize = 25;
   
   const { user } = useSelector((state) => state.auth);
   const tenantId = user?.id;

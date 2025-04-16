@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Tag, Form, Input, DatePicker, Spin, Alert } from 'antd';
+import { Button, Modal, Tag, Form, Input, DatePicker, Spin, Alert, message } from 'antd';
 import TableComponent from '../TableComponent';
 import { getUsformatedDate } from '../../utils/auth';
 
@@ -12,22 +12,24 @@ const ApprovalRequests = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [form] = Form.useForm();
+  const [processing, setProcessing] = useState(false);
+
+  const fetchApplications = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://127.0.0.1:8000/applications/?skip=0&limit=10');
+      if (!response.ok) throw new Error('Failed to fetch applications');
+      const data = await response.json();
+      setApplications(data);
+      setFilteredApplications(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('http://127.0.0.1:8000/applications/?skip=0&limit=10');
-        if (!response.ok) throw new Error('Failed to fetch applications');
-        const data = await response.json();
-        setApplications(data);
-        setFilteredApplications(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchApplications();
   }, []);
 
@@ -49,18 +51,84 @@ const ApprovalRequests = () => {
     setFilteredApplications(filtered);
   };
 
-  const formatDate = (dateString) => {
-    // return dayjs(dateString).format('MM/DD/YYYY');
+  const handleSendForBackgroundCheck = async () => {
+    try {
+      setProcessing(true);
+      const response = await fetch(`http://127.0.0.1:8000/background-checks/${selectedApp.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+        },
+        body: JSON.stringify({
+          tenant_id: selectedApp.tenant.id,
+          apartment_id: selectedApp.apartment.id,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to initiate background check');
+
+      await response.json();
+      message.success('Background check initiated successfully');
+      fetchApplications();
+      setSelectedApp(null);
+    } catch (err) {
+      message.error(err.message);
+    } finally {
+      setProcessing(false);
+    }
   };
 
-  const handleDecision = (status) => {
-    Modal.confirm({
-      title: `Are you sure you want to ${status} this application?`,
-      onOk: () => {
-        // API call to update status
-        setSelectedApp(null);
-      },
-    });
+  const handleStatusUpdate = async (status) => {
+    try {
+      setProcessing(true);
+      const values = await form.validateFields();
+      
+      const payload = {
+        ...selectedApp,
+        status,
+        admin_notes: values.admin_notes || '',
+        desired_move_in_date: selectedApp.desired_move_in_date,
+        lease_duration: selectedApp.lease_duration,
+        application_notes: selectedApp.application_notes
+      };
+
+      const response = await fetch(`http://127.0.0.1:8000/applications/${selectedApp.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error('Failed to update application');
+
+      const updatedApp = await response.json();
+      setApplications(prev => prev.map(app => 
+        app.id === updatedApp.id ? updatedApp : app
+      ));
+      
+      message.success(`Application ${status} successfully`);
+      setSelectedApp(null);
+    } catch (err) {
+      message.error(err.message);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const validateRejection = async () => {
+    try {
+      const adminNotes = form.getFieldValue('admin_notes');
+      if (!adminNotes?.trim()) {
+        message.error('Please provide rejection reason in admin notes');
+        return;
+      }
+      await handleStatusUpdate('rejected');
+    } catch (err) {
+      message.error(err.message);
+    }
   };
 
   const columns = [
@@ -88,7 +156,9 @@ const ApprovalRequests = () => {
     {
       title: 'Actions',
       render: (_, record) => (
-        <Button onClick={() => setSelectedApp(record)}>Review</Button>
+        (record.status === 'pending' || record.status === 'verified') && (
+          <Button onClick={() => setSelectedApp(record)}>Review</Button>
+        )
       ),
     },
   ];
@@ -115,14 +185,38 @@ const ApprovalRequests = () => {
       <Modal
         title="Application Details"
         open={!!selectedApp}
-        onCancel={() => setSelectedApp(null)}
+        onCancel={() => {
+          form.resetFields(); // Clear validations and form state
+          setSelectedApp(null);
+        }}
         footer={[
-          <Button key="reject" type="primary" onClick={() => handleDecision('rejected')}>
+          <Button 
+            key="reject" 
+            type="primary" 
+            onClick={validateRejection}
+            loading={processing}
+          >
             Reject
           </Button>,
-          <Button key="approve" type="primary" onClick={() => handleDecision('approved')}>
-            Approve
-          </Button>,
+          selectedApp?.status === 'pending' ? (
+            <Button 
+              key="backgroundCheck" 
+              type="primary" 
+              onClick={handleSendForBackgroundCheck}
+              loading={processing}
+            >
+              Send for Background Check
+            </Button>
+          ) : (
+            <Button 
+              key="approve" 
+              type="primary" 
+              onClick={() => handleStatusUpdate('approved')}
+              loading={processing}
+            >
+              Approve
+            </Button>
+          )
         ]}
       >
         {selectedApp && (
@@ -151,8 +245,21 @@ const ApprovalRequests = () => {
             <Form.Item label="Tenant Notes">
               <Input.TextArea value={selectedApp.application_notes} disabled />
             </Form.Item>
-            <Form.Item label="Admin Notes" name="admin_notes">
-              <Input.TextArea />
+            <Form.Item 
+              label="Admin Notes" 
+              name="admin_notes"
+              // rules={[
+              //   ({ getFieldValue }) => ({
+              //     validator(_, value) {
+              //       if (selectedApp?.status === 'pending' && !value) {
+              //         return Promise.reject(new Error('Admin notes are required for rejection'));
+              //       }
+              //       return Promise.resolve();
+              //     },
+              //   }),
+              // ]}
+            >
+              <Input.TextArea placeholder="Enter admin notes (required for rejection)" />
             </Form.Item>
           </Form>
         )}
