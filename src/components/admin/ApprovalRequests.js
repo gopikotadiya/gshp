@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Button, Modal, Tag, Form, Input, DatePicker, Spin, Alert, message } from 'antd';
 import TableComponent from '../TableComponent';
 import { getUsformatedDate } from '../../utils/auth';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+
+dayjs.extend(duration);
 
 const ApprovalRequests = () => {
   const [applications, setApplications] = useState([]);
@@ -13,11 +17,14 @@ const ApprovalRequests = () => {
   const [error, setError] = useState(null);
   const [form] = Form.useForm();
   const [processing, setProcessing] = useState(false);
+  const [adminNotesError, setAdminNotesError] = useState('');
+  const [leaseModalVisible, setLeaseModalVisible] = useState(false);
+  const [leaseForm] = Form.useForm();
 
   const fetchApplications = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://127.0.0.1:8000/applications/?skip=0&limit=10');
+      const response = await fetch('http://127.0.0.1:8000/applications/?skip=0&limit=100');
       if (!response.ok) throw new Error('Failed to fetch applications');
       const data = await response.json();
       setApplications(data);
@@ -37,6 +44,21 @@ const ApprovalRequests = () => {
     filterApplications();
   }, [searchTerm, statusFilter, applications]);
 
+  useEffect(() => {
+    if (leaseModalVisible && selectedApp) {
+      const startDate = dayjs(selectedApp.desired_move_in_date);
+      const endDate = startDate.add(selectedApp.lease_duration, 'month');
+      
+      leaseForm.setFieldsValue({
+        start_date: startDate,
+        end_date: endDate,
+        monthly_rent: selectedApp.apartment.price,
+        deposit_amount: selectedApp.apartment.price,
+        payment_due_day: 5,
+      });
+    }
+  }, [leaseModalVisible, selectedApp, leaseForm]);
+
   const filterApplications = () => {
     let filtered = applications.filter(app => {
       const tenantName = `${app.tenant.first_name} ${app.tenant.last_name}`.toLowerCase();
@@ -54,7 +76,7 @@ const ApprovalRequests = () => {
   const handleSendForBackgroundCheck = async () => {
     try {
       setProcessing(true);
-      const response = await fetch(`http://127.0.0.1:8000/background-checks/${selectedApp.id}`, {
+      const response = await fetch(`http://127.0.0.1:8000/background-checks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,6 +85,7 @@ const ApprovalRequests = () => {
         body: JSON.stringify({
           tenant_id: selectedApp.tenant.id,
           apartment_id: selectedApp.apartment.id,
+          application_id: selectedApp.id
         }),
       });
 
@@ -118,6 +141,81 @@ const ApprovalRequests = () => {
     }
   };
 
+  const handleLeaseSubmit = async () => {
+    try {
+      setProcessing(true);
+      const values = await leaseForm.validateFields();
+      
+      const leasePayload = {
+        application_id: selectedApp.id,
+        apartment_id: selectedApp.apartment.id,
+        tenant_id: selectedApp.tenant.id,
+        start_date: values.start_date.toISOString(),
+        end_date: values.end_date.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
+        monthly_rent: values.monthly_rent,
+        deposit_amount: values.deposit_amount,
+        payment_due_day: 5,
+      };
+
+      const leaseResponse = await fetch('http://127.0.0.1:8000/leases/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(leasePayload),
+      });
+
+      if (!leaseResponse.ok) throw new Error('Lease creation failed');
+
+      const adminNotes = form.getFieldValue('admin_notes') || '';
+      const appPayload = {
+        ...selectedApp,
+        status: 'approved',
+        admin_notes: adminNotes,
+      };
+
+      const appResponse = await fetch(`http://127.0.0.1:8000/applications/${selectedApp.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(appPayload),
+      });
+
+      if (!appResponse.ok) throw new Error('Status update failed');
+
+      // 3. Update apartment availability
+    const apartmentPayload = {
+      title: selectedApp.apartment.title,
+      address: selectedApp.apartment.address,
+      apartment_number: selectedApp.apartment.apartment_number,
+      city: selectedApp.apartment.city,
+      state: selectedApp.apartment.state,
+      zip_code: selectedApp.apartment.zip_code,
+      price: selectedApp.apartment.price,
+      bedrooms: selectedApp.apartment.bedrooms,
+      bathrooms: selectedApp.apartment.bathrooms,
+      availability: false,
+      images: selectedApp.apartment.images || [],
+    };
+
+    const apartmentResponse = await fetch(
+      `http://127.0.0.1:8000/apartments/${selectedApp.apartment.id}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(apartmentPayload),
+      }
+    );
+    if (!apartmentResponse.ok) throw new Error('Apartment update failed');
+
+    message.success('Application approved, lease created, and apartment updated');
+      setLeaseModalVisible(false);
+      setSelectedApp(null);
+      fetchApplications();
+    } catch (err) {
+      message.error(err.message);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
   const validateRejection = async () => {
     try {
       const adminNotes = form.getFieldValue('admin_notes');
@@ -147,16 +245,27 @@ const ApprovalRequests = () => {
     },
     {
       title: 'Status',
-      render: (_, record) => (
-        <Tag color={record.status === 'pending' ? 'orange' : record.status === 'approved' ? 'green' : 'red'}>
-          {record.status}
-        </Tag>
-      ),
+      render: (_, record) => {
+        const statusColor = {
+          pending: 'orange',
+          background_verified: 'cyan',
+          under_review: 'blue',
+          approved: 'green',
+          rejected: 'red'
+        }[record.status];
+  
+        return (
+          <Tag color={statusColor || 'red'}>
+            {record.status.replace(/_/g, ' ').toUpperCase()}
+          </Tag>
+        );
+      },
     },
+  
     {
       title: 'Actions',
       render: (_, record) => (
-        (record.status === 'pending' || record.status === 'verified') && (
+        (record.status === 'pending' || record.status === 'background_verified') && (
           <Button onClick={() => setSelectedApp(record)}>Review</Button>
         )
       ),
@@ -174,6 +283,8 @@ const ApprovalRequests = () => {
         filterOptions={[
           { value: 'all', label: 'All Statuses' },
           { value: 'pending', label: 'Pending' },
+          { value: 'background_verified', label: 'Background Verified' },
+          { value: 'under_review', label: 'Under Review' },
           { value: 'approved', label: 'Approved' },
           { value: 'rejected', label: 'Rejected' },
         ]}
@@ -211,7 +322,7 @@ const ApprovalRequests = () => {
             <Button 
               key="approve" 
               type="primary" 
-              onClick={() => handleStatusUpdate('approved')}
+              onClick={() => setLeaseModalVisible(true)}
               loading={processing}
             >
               Approve
@@ -260,10 +371,44 @@ const ApprovalRequests = () => {
               // ]}
             >
               <Input.TextArea placeholder="Enter admin notes (required for rejection)" />
+              <span>message.error</span>
             </Form.Item>
           </Form>
         )}
       </Modal>
+
+      <Modal
+        title="Create Lease Agreement"
+        open={leaseModalVisible}
+        onCancel={() => setLeaseModalVisible(false)}
+        onOk={handleLeaseSubmit}
+        confirmLoading={processing}
+      >
+        <Form form={leaseForm} layout="vertical">
+          <Form.Item label="Start Date" name="start_date" rules={[{ required: true }]}>
+            <DatePicker 
+              format="YYYY-MM-DD"
+              disabledDate={(current) => current && current < dayjs().startOf('day')} 
+            />
+          </Form.Item>
+          <Form.Item label="End Date" name="end_date" rules={[{ required: true }]}>
+            <DatePicker 
+              format="YYYY-MM-DD" 
+              disabledDate={(current) => current && current <= leaseForm.getFieldValue('start_date')}
+            />
+          </Form.Item>
+          <Form.Item label="Monthly Rent" name="monthly_rent" rules={[{ required: true }]}>
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item label="Deposit Amount" name="deposit_amount" rules={[{ required: true }]}>
+            <Input type="number" />
+          </Form.Item>
+          {/* <Form.Item label="Payment Due Day">
+            <Input value="5" disabled />
+          </Form.Item> */}
+        </Form>
+      </Modal>
+
     </div>
   );
 };

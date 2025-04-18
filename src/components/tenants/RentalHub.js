@@ -4,7 +4,9 @@ import { EditOutlined, SaveOutlined, CloseOutlined, DeleteOutlined } from '@ant-
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import ConfirmModalComponent from '../ConfirmModalComponent';
+import LeaseCard from '../LeaseCard';
 import { getUsformatedDate } from '../../utils/auth';
+import TabComponent from '../TabComponent';
 
 const { useBreakpoint } = Grid;
 
@@ -184,19 +186,35 @@ const ApplicationCard = ({ app, onUpdate, onDelete }) => {
   );
 };
 
+
+
 const RentalHub = () => {
   const [applications, setApplications] = useState([]);
+  const [leases, setLeases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const fetchApplications = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/applications/tenant/${user.id}`);
-        if (!response.ok) throw new Error('Failed to fetch applications');
-        const data = await response.json();
-        setApplications(data);
+        setLoading(true);
+        const [appsRes, leasesRes] = await Promise.all([
+          fetch(`http://127.0.0.1:8000/applications/tenant/${user.id}`),
+          fetch(`http://127.0.0.1:8000/leases/tenant/${user.id}`)
+        ]);
+
+        if (!appsRes.ok) throw new Error('Failed to fetch applications');
+        if (!leasesRes.ok) throw new Error('Failed to fetch leases');
+
+        const [appsData, leasesData] = await Promise.all([
+          appsRes.json(),
+          leasesRes.json()
+        ]);
+
+        setApplications(appsData);
+        setLeases(leasesData);
+        setError(null);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -204,30 +222,17 @@ const RentalHub = () => {
       }
     };
 
-    fetchApplications();
+    fetchData();
   }, [user.id]);
 
-  const handleApplicationUpdate = (updatedApp) => {
-    setApplications(prev =>
-      prev.map(app => app.id === updatedApp.id ? updatedApp : app)
-    );
-  };
-
-  const handleApplicationDelete = (deletedId) => {
-    setApplications(prev =>
-      prev.filter(app => app.id !== deletedId)
-    );
-  };
-
-  if (loading) return <Spin size="large" className="mt-8" />;
-  if (error) return <Alert message="Error" description={error} type="error" showIcon className="m-4" />;
-
-  if (applications.length === 0) {
-    return (
-      <div style={{ padding: '42px' }}>
+  const tabItems = [
+    {
+      key: '1',
+      label: `Applications (${applications.length})`,
+      content: applications.length === 0 ? (
         <Alert
-          message="No Applications Found"
-          description="You haven't applied to any apartments yet. Start your journey by applying to your dream apartment today!"
+          message="No Active Applications"
+          description="You don't have any ongoing applications. Browse our apartments to find your next home!"
           type="info"
           showIcon
           action={
@@ -235,21 +240,48 @@ const RentalHub = () => {
               Browse Apartments
             </Button>
           }
+          className="mb-8"
         />
-      </div>
-    );
-  }
+      ) : (
+        applications.map((app) => (
+          <ApplicationCard
+            key={app.id}
+            app={app}
+            onUpdate={(updatedApp) => 
+              setApplications(prev => prev.map(a => a.id === updatedApp.id ? updatedApp : a))
+            }
+            onDelete={(deletedId) => 
+              setApplications(prev => prev.filter(a => a.id !== deletedId))
+            }
+          />
+        ))
+      )
+    },
+    {
+      key: '2',
+      label: `Rented Apartments (${leases.length})`,
+      content: leases.length === 0 ? (
+        <Alert
+          message="No Active Leases"
+          description="You currently don't have any active leases. Once your applications are approved, they'll appear here."
+          type="info"
+          showIcon
+          className="mb-8"
+        />
+      ) : (
+        leases.map((lease) => (
+          <LeaseCard key={lease.id} lease={lease} />
+        ))
+      )
+    }
+  ];
+
+  if (loading) return <Spin size="large" className="mt-8" />;
+  if (error) return <Alert message="Error" description={error} type="error" showIcon className="m-4" />;
 
   return (
-    <div style={{ padding: '42px' }}>
-      {applications.map((app) => (
-        <ApplicationCard
-          key={app.id}
-          app={app}
-          onUpdate={handleApplicationUpdate}
-          onDelete={handleApplicationDelete}
-        />
-      ))}
+    <div style={{ padding: '42px' }}> 
+        <TabComponent items={tabItems} />
     </div>
   );
 };
