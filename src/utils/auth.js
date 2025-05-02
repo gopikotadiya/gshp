@@ -1,6 +1,5 @@
 import store from "../redux/store";
 
-// src/utils/auth.js
 export const getAuthHeader = () => {
     const token = localStorage.getItem('token') || store.getState().auth.token;
     return token ? { Authorization: `Bearer ${token}` } : {};

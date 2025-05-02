@@ -3,6 +3,8 @@ import { Card, Button, List, Pagination, Modal, Form, Input, Select, message, Ro
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import ConfirmModalComponent from '../ConfirmModalComponent';
+
 
 const { Meta } = Card;
 const { Option } = Select;
@@ -16,7 +18,8 @@ const ListApartment = () => {
   const [form] = Form.useForm();
   const [editingProperty, setEditingProperty] = useState(null);
   const pageSize = 10;
-
+  const [showModal, setShowModal] = useState(false);
+  const [currentId, setCurrentId] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const userId = user?.id;
 
@@ -47,22 +50,25 @@ const ListApartment = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    Modal.confirm({
-        title: 'Delete Property',
-        content: 'Are you sure you want to delete this property?',
-        okText: 'Yes',
-        cancelText: 'No',
-        onOk: async () => {
-          try {
-            await axios.delete(`http://127.0.0.1:8000/apartments/${id}`);
-            message.success('Property deleted successfully');
-            fetchProperties();
-          } catch (error) {
-            message.error('Failed to delete property');
-          }
+  const handleDelete = async () => {
+    try {
+          const response = await fetch(`http://127.0.0.1:8000/apartments/${currentId}`, {
+            method: 'DELETE',
+            headers: { 'accept': 'application/json' },
+          });
+    
+          if (!response.ok) throw new Error('Failed to delete property');
+    
+          const result = await response.json();
+          message.success(result.message);
+          fetchProperties();
+        } catch (err) {
+          console.error('Delete failed:', err);
+          message.error('Failed to delete property');
+        } finally {
+          setShowModal(false);
         }
-      });
+   
   };
 
   const handleFormSubmit = async (values) => {
@@ -71,6 +77,10 @@ const ListApartment = () => {
         await axios.put(`http://127.0.0.1:8000/apartments/${editingProperty.id}`, values);
         message.success('Property updated successfully');
       } else {
+        const data = values;
+        data.landlord_id = userId;
+        data.images = [];
+        data.apartment_number = "12";
         await axios.post('http://127.0.0.1:8000/apartments/', values);
         message.success('Property added successfully');
       }
@@ -87,6 +97,10 @@ const ListApartment = () => {
     setIsModalVisible(true);
   };
 
+  const setModal = (id) =>{
+    setShowModal(true);
+    setCurrentId(id);
+  }
   return (
     <div style={{ padding: '24px' }}>
       <Button
@@ -112,7 +126,7 @@ const ListApartment = () => {
               title={property.title}
               actions={[
                 <EditOutlined key="edit" onClick={() => handleEdit(property)} />,
-                <DeleteOutlined key="delete" onClick={() => handleDelete(property.id)} />,
+                <DeleteOutlined key="delete" onClick={() => setModal(property.id)} />,
               ]}
             >
               <Meta
@@ -159,7 +173,6 @@ const ListApartment = () => {
 >
   <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
     <Row gutter={16}>
-      {/* Left Column */}
       <Col span={12}>
         <Form.Item 
           name="title" 
@@ -186,7 +199,6 @@ const ListApartment = () => {
         </Form.Item>
       </Col>
 
-      {/* Right Column */}
       <Col span={12}>
         <Form.Item 
           name="state" 
@@ -247,6 +259,14 @@ const ListApartment = () => {
     </Form.Item>
   </Form>
 </Modal>
+
+      <ConfirmModalComponent
+        visible={showModal}
+        title="Delete Application"
+        content="Are you sure you want to delete this application? This action cannot be undone."
+        onConfirm={handleDelete}
+        onCancel={() => setShowModal(false)}
+      />
     </div>
   );
 };

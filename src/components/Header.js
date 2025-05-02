@@ -123,7 +123,8 @@ const AppHeader = (props) => {
               |
             </Menu.Item>
             <Menu.Item key="background-maintenance" onClick={handleClick}>
-              Background & Maintenance
+              Background Checks
+              {/* & Maintenance */}
             </Menu.Item>
           </>
         )}

@@ -5,7 +5,6 @@ import TabComponent from '../TabComponent';
 import { getUsformatedDate } from '../../utils/auth';
 
 const MaintenanceBackground = () => {
-  // Background checks state
   const [backgroundChecks, setBackgroundChecks] = useState([]);
   const [loadingBackground, setLoadingBackground] = useState(false);
   const [errorBackground, setErrorBackground] = useState(null);
@@ -111,16 +110,6 @@ const MaintenanceBackground = () => {
         </Tag>
       ),
     },
-    // {
-    //   title: 'Report',
-    //   render: (_, record) => (
-    //     record.report_url ? (
-    //       <a href={record.report_url} target="_blank" rel="noopener noreferrer">
-    //         View Report
-    //       </a>
-    //     ) : 'N/A'
-    //   ),
-    // },
     {
       title: 'Actions',
       render: (_, record) => (
@@ -130,8 +119,6 @@ const MaintenanceBackground = () => {
       ),
     },
   ];
-
-  // Maintenance requests columns and state remain unchanged
 
   const tabItems = [
     {
@@ -163,8 +150,22 @@ const MaintenanceBackground = () => {
 
   return (
     <div style={{ padding: '42px' }}>
-      <TabComponent items={tabItems} />
-      
+      <TableComponent
+        headerTitle="Background Checks"
+        columns={bgCheckColumns}
+          data={filteredBackgroundChecks}
+          filterOptions={[
+            { value: 'all', label: 'All Statuses' },
+            { value: 'pending', label: 'Pending' },
+            { value: 'approved', label: 'Approved' },
+            { value: 'rejected', label: 'Rejected' },
+          ]}
+          onSearch={setSearchTerm}
+          onFilterChange={setStatusFilter}
+          loading={loadingBackground}
+          error={errorBackground}
+      />
+
       <Modal
         title="Background Check Details"
         open={!!selectedBgCheck}

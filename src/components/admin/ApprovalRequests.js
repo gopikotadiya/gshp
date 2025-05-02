@@ -180,7 +180,6 @@ const ApprovalRequests = () => {
 
       if (!appResponse.ok) throw new Error('Status update failed');
 
-      // 3. Update apartment availability
     const apartmentPayload = {
       title: selectedApp.apartment.title,
       address: selectedApp.apartment.address,
@@ -297,7 +296,7 @@ const ApprovalRequests = () => {
         title="Application Details"
         open={!!selectedApp}
         onCancel={() => {
-          form.resetFields(); // Clear validations and form state
+          form.resetFields(); 
           setSelectedApp(null);
         }}
         footer={[
@@ -359,16 +358,6 @@ const ApprovalRequests = () => {
             <Form.Item 
               label="Admin Notes" 
               name="admin_notes"
-              // rules={[
-              //   ({ getFieldValue }) => ({
-              //     validator(_, value) {
-              //       if (selectedApp?.status === 'pending' && !value) {
-              //         return Promise.reject(new Error('Admin notes are required for rejection'));
-              //       }
-              //       return Promise.resolve();
-              //     },
-              //   }),
-              // ]}
             >
               <Input.TextArea placeholder="Enter admin notes (required for rejection)" />
               <span>message.error</span>
@@ -403,9 +392,6 @@ const ApprovalRequests = () => {
           <Form.Item label="Deposit Amount" name="deposit_amount" rules={[{ required: true }]}>
             <Input type="number" />
           </Form.Item>
-          {/* <Form.Item label="Payment Due Day">
-            <Input value="5" disabled />
-          </Form.Item> */}
         </Form>
       </Modal>
 

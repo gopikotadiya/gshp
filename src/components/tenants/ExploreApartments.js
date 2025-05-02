@@ -75,13 +75,6 @@ const ExploreApartments = () => {
         renderItem={(apartment) => (
           <List.Item>
             <Card
-              // cover={apartment.images?.length > 0 && (
-              //   <img
-              //     alt={apartment.title}
-              //     src={apartment.images[0]}
-              //     style={{ height: 200, objectFit: 'cover' }}
-              //   />
-              // )}
               actions={[
                 <Button
                   type="primary"

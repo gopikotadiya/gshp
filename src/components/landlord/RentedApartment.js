@@ -34,7 +34,6 @@ const RentedApartments = () => {
           setLoading(true);
           setError(null);
           
-          // Fetch lease by apartment ID
           const leaseRes = await axios.get(
             `http://127.0.0.1:8000/leases/apartment/${selectedApartment.id}`
           );
@@ -42,7 +41,6 @@ const RentedApartments = () => {
           const leaseData = leaseRes.data;
           setLeaseDetails(leaseData);
 
-          // Fetch related data
           const [paymentsRes, depositRes] = await Promise.all([
             axios.get(`http://127.0.0.1:8000/leases/${leaseData.id}/payments`),
             axios.get(`http://127.0.0.1:8000/leases/${leaseData.id}/security-deposit`)
@@ -127,30 +125,6 @@ const RentedApartments = () => {
         style={{ marginTop: 16, textAlign: 'center' }}
       />
 
-      {/* <Modal
-        title="Property Details"
-        visible={!!selectedProperty}
-        onCancel={() => setSelectedProperty(null)}
-        footer={[
-          <Button key="back" onClick={() => setSelectedProperty(null)}>
-            Close
-          </Button>
-        ]}
-      >
-        {selectedProperty && (
-          <div>
-            <p><Text strong>Address:</Text> {selectedProperty.address}</p>
-            <p><Text strong>City:</Text> {selectedProperty.city}</p>
-            <p><Text strong>State:</Text> {selectedProperty.state}</p>
-            <p><Text strong>Zip Code:</Text> {selectedProperty.zip_code}</p>
-            <p><Text strong>Price:</Text> ${selectedProperty.price}</p>
-            <p><Text strong>Bedrooms:</Text> {selectedProperty.bedrooms}</p>
-            <p><Text strong>Bathrooms:</Text> {selectedProperty.bathrooms}</p>
-            <p><Text strong>Apartment Number:</Text> {selectedProperty.apartment_number}</p>
-            <p><Text strong>Listed Date:</Text> {new Date(selectedProperty.created_at).toLocaleDateString()}</p>
-          </div>
-        )}
-      </Modal> */}
       <Modal
         title={`Lease Details - ${selectedApartment?.title}`}
         visible={!!selectedApartment}
@@ -169,7 +143,6 @@ const RentedApartments = () => {
         ) : (
           leaseDetails && (
             <Collapse bordered={false} defaultActiveKey={['1', '2', '3', '4']}>
-              {/* Lease Information */}
               <Panel header="Lease Information" key="1">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -193,7 +166,6 @@ const RentedApartments = () => {
                 </div>
               </Panel>
 
-              {/* Tenant Information */}
               <Panel header="Tenant Information" key="2">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -215,7 +187,6 @@ const RentedApartments = () => {
                 </div>
               </Panel>
 
-              {/* Payment History */}
               <Panel header="Payment History" key="3">
                 {payments.length === 0 ? (
                   <Text type="secondary">No payments recorded</Text>
@@ -246,7 +217,6 @@ const RentedApartments = () => {
                 )}
               </Panel>
 
-              {/* Security Deposit */}
               <Panel header="Security Deposit" key="4">
                 {deposit.length === 0 ? (
                   <Text type="secondary">No deposit records found</Text>

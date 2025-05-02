@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOGIN_API, USER_BASE_API, REGISTER_API } from '../../constants/apis'; // Import both APIs
+import { LOGIN_API, USER_BASE_API, REGISTER_API } from '../../constants/apis'; 
 import { Navigate } from 'react-router-dom';
 
 // Registration Action
@@ -45,9 +45,6 @@ export const logoutUser = () => (dispatch) => {
 
 export const updateUserProfile = (userId, values, headers) => async (dispatch) => {
   try {
-    // const token = localStorage.getItem('token');
-    // const headers = { Authorization: `Bearer ${token}` };
-    
     const response = await axios.put(
       `${USER_BASE_API}/${userId}`,
       values,

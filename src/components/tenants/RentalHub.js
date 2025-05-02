@@ -27,13 +27,17 @@ const ApplicationCard = ({ app, onUpdate, onDelete }) => {
   const handleSave = async () => {
     try {
       const values = await form.validateFields();
+
+      app.lease_duration = values.lease_duration;
+      app.desired_move_in_date = values.desired_move_in_date;
+      app.application_notes = values.application_notes;
       const response = await fetch(`http://127.0.0.1:8000/applications/${app.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'accept': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(app),
       });
       if (!response.ok) throw new Error('Failed to update application');
       const updatedApp = await response.json();
@@ -92,7 +96,6 @@ const ApplicationCard = ({ app, onUpdate, onDelete }) => {
       >
         <Form form={form} layout="vertical" disabled={!editMode}>
           <div className={`grid ${screens.md ? 'grid-cols-2' : 'grid-cols-1'} gap-4`}>
-            {/* Status Section */}
             <Card className="mb-4">
               <div className="flex items-center justify-between">
                 <span className="font-medium">Application Status:</span>
@@ -105,7 +108,6 @@ const ApplicationCard = ({ app, onUpdate, onDelete }) => {
               </div>
             </Card>
 
-            {/* Dates Section */}
             <Card className="mb-4">
               <div className="space-y-2">
                 <div>
@@ -125,7 +127,6 @@ const ApplicationCard = ({ app, onUpdate, onDelete }) => {
               </div>
             </Card>
 
-            {/* Lease Details Section */}
             <Card className="mb-4">
               <div className="space-y-2">
                 <div>
@@ -147,7 +148,6 @@ const ApplicationCard = ({ app, onUpdate, onDelete }) => {
               </div>
             </Card>
 
-            {/* Notes Section */}
             <Card>
               <Form.Item
                 name="application_notes"
@@ -228,7 +228,7 @@ const RentalHub = () => {
   const tabItems = [
     {
       key: '1',
-      label: `Applications (${applications.length})`,
+      label: `Applications `,
       content: applications.length === 0 ? (
         <Alert
           message="No Active Applications"
@@ -259,7 +259,7 @@ const RentalHub = () => {
     },
     {
       key: '2',
-      label: `Rented Apartments (${leases.length})`,
+      label: `Rented Apartments `,
       content: leases.length === 0 ? (
         <Alert
           message="No Active Leases"

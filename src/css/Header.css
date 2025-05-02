@@ -1,4 +1,3 @@
-/* Header Styles */
 .header {
   display: flex;
   justify-content: space-between;
@@ -8,7 +7,6 @@
   color: #ffffff;
 }
 
-/* Logo */
 .logo {
   font-size: 24px;
   font-weight: bold;
@@ -17,13 +15,11 @@
   transition: color 0.3s ease-in-out;
 }
 
-/* Authentication Section */
 .auth-section {
   display: flex;
   align-items: center;
 }
 
-/* Avatar & Logout */
 .user-profile {
   display: flex;
   align-items: center;
@@ -57,7 +53,6 @@
   color: white;
 }
 
-/* Modals */
 .login-modal .ant-modal-content {
   background-color: #ffffff;
   border-radius: 8px;
@@ -76,15 +71,12 @@
   background-color: #15154c;
 }
 
-/* Error Message */
 .error-message {
-  /* color: #d54557; */
   font-size: 14px;
   margin-bottom: 10px;
   text-align: center;
 }
 
-/* Navigation Menu */
 .nav-menu {
   flex: 1;
   display: flex;
@@ -121,11 +113,6 @@
   
 }
 
-/* .nav-menu .ant-menu-item:hover .anticon {
-  color: #d54557 !important;
-} */
-
-/* Buttons */
 .ant-btn {
   background-color: #d54557;
   color: white;
@@ -138,15 +125,10 @@
 }
 
 .ant-btn:hover {
-  background-color: #1a1a5c; /* Change to 1a1a5c on hover */
+  background-color: #1a1a5c; 
   transform: scale(1.05);
 }
 
-/* .ant-tabs .ant-tabs-nav-list .ant-tabs-ink-bar {
-  background-color: #d54557; 
-} */
-
-/* Global Ant Design Tabs override */
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
   padding: 12px 20px;
   transition: background 0.1s ease;
@@ -154,10 +136,6 @@
   border: none !important;
   background: transparent;
 }
-
-/* .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab:hover {
-  background-color: #e6f7ff !important;
-} */
 
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active {
   background-color: #d54557 !important;

@@ -50,20 +50,6 @@ const FindRoommates = () => {
     }
   };
 
-  // const handleProfileSubmit = async (values) => {
-  //   try {
-  //     await axios.put(
-  //       `http://127.0.0.1:8000/profile/${user.id}`,
-  //       values,
-  //       { headers }
-  //     );
-  //     message.success('Profile updated successfully!');
-  //     setIsProfileModalVisible(false);
-  //     fetchRoommates();
-  //   } catch (error) {
-  //     message.error(error.response?.data?.detail || 'Profile update failed');
-  //   }
-  // };
 
   const handleProfileSubmit = (values) => {
     dispatch(updateUserProfile(user.id, values, headers))

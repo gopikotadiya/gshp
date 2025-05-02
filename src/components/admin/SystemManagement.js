@@ -5,7 +5,6 @@ import TabComponent from '../TabComponent';
 import { getUsformatedDate } from '../../utils/auth';
 
 const SystemManagement = () => {
-  // User Management States
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(false);
@@ -13,7 +12,6 @@ const SystemManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
 
-  // Apartment Management States
   const [apartments, setApartments] = useState([]);
   const [filteredApartments, setFilteredApartments] = useState([]);
   const [apartmentsLoading, setApartmentsLoading] = useState(false);
@@ -21,7 +19,6 @@ const SystemManagement = () => {
   const [apartmentsSearch, setApartmentsSearch] = useState('');
   const [cityFilter, setCityFilter] = useState('all');
 
-  // Fetch Users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -40,7 +37,6 @@ const SystemManagement = () => {
     fetchUsers();
   }, []);
 
-  // Fetch Apartments
   useEffect(() => {
     const fetchApartments = async () => {
       try {
@@ -59,7 +55,6 @@ const SystemManagement = () => {
     fetchApartments();
   }, []);
 
-  // User Filtering
   useEffect(() => {
     const filtered = users.filter(user => {
       const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -70,7 +65,6 @@ const SystemManagement = () => {
     setFilteredUsers(filtered);
   }, [searchTerm, roleFilter, users]);
 
-  // Apartment Filtering
   useEffect(() => {
     const filtered = apartments.filter(apartment => {
       const matchesSearch = apartment.title.toLowerCase().includes(apartmentsSearch.toLowerCase()) ||
@@ -81,7 +75,6 @@ const SystemManagement = () => {
     setFilteredApartments(filtered);
   }, [apartmentsSearch, cityFilter, apartments]);
 
-  // User Columns
   const userColumns = [
     {
       title: 'Name',
@@ -118,7 +111,6 @@ const SystemManagement = () => {
     },
   ];
 
-  // Apartment Columns
   const apartmentColumns = [
     {
       title: 'Title',
@@ -159,7 +151,6 @@ const SystemManagement = () => {
     },
   ];
 
-  // Get unique cities for filter options
   const cityOptions = [...new Set(apartments.map(a => a.city))].map(city => ({
     value: city,
     label: city
@@ -171,7 +162,7 @@ const SystemManagement = () => {
       label: 'Users',
       content: (
         <TableComponent
-          headerTitle={false} // Hide internal header since we're using tabs
+          headerTitle={false} 
           data={filteredUsers}
           columns={userColumns}
           loading={usersLoading}

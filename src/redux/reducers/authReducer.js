@@ -1,4 +1,3 @@
-// src/redux/reducers/authReducer.js
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')) || null, 
   token: localStorage.getItem('token') || null,

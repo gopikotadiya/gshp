@@ -50,7 +50,6 @@ const LeaseDetailsModal = ({ lease, visible, onClose }) => {
     }, [visible, lease.id]);
   
     const handlePayRent = (month, year) => {
-      // Implement payment logic
       console.log(`Paying rent for ${month}/${year}`);
     };
   
@@ -74,7 +73,6 @@ const LeaseDetailsModal = ({ lease, visible, onClose }) => {
         {error && <Alert message={error} type="error" className="mb-4" />}
         
         <Collapse bordered={false} defaultActiveKey={['1', '2', '3']}>
-          {/* Lease Information */}
           <Panel header="Lease Information" key="1">
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -98,7 +96,6 @@ const LeaseDetailsModal = ({ lease, visible, onClose }) => {
             </div>
           </Panel>
   
-          {/* Security Deposit */}
           <Panel header="Security Deposit" key="2">
             {loading ? (
               <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
@@ -133,7 +130,6 @@ const LeaseDetailsModal = ({ lease, visible, onClose }) => {
             )}
           </Panel>
   
-          {/* Rent Payments */}
           <Panel header="Rent Payments" key="3">
             {loading ? (
               <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
