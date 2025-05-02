@@ -1,7 +1,7 @@
 // Header.js
 import React, { useState } from 'react';
 import { Layout, Button, Avatar, Modal, Form, Input, message, Select, Menu } from 'antd';
-import { UserOutlined, LockOutlined, MailOutlined, FormOutlined, BarChartOutlined, FormatPainterOutlined, HomeOutlined, HomeFilled } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, MailOutlined, FormOutlined, BarChartOutlined, FormatPainterOutlined, HomeOutlined, HomeFilled, SettingOutlined, SettingFilled } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser, loginUser, registerUser } from '../redux/actions/authActions';
@@ -51,6 +51,7 @@ const AppHeader = (props) => {
   const handleLogout = () => {
     dispatch(logoutUser());
     navigate('/');
+    window.location.reload();
   };
 
 
@@ -89,20 +90,41 @@ const AppHeader = (props) => {
 
         {isLoggedIn && user?.role === 'tenant' && (
           <>
-            <Menu.Item key="explore-apartments" icon={<HomeFilled />}>
+            <Menu.Item key="explore-apartments" icon={<HomeFilled />} onClick={handleClick}>
               Explore Apartments
             </Menu.Item>
             <Menu.Item className="ant-menu-item-divider" key="divider3" disabled style={{ cursor: 'default' }}>
               |
             </Menu.Item>
-            <Menu.Item key="find-roommate">
+            <Menu.Item key="find-roommate" onClick={handleClick}>
               Find Your Roommate
             </Menu.Item>
             <Menu.Item className="ant-menu-item-divider" key="divider4" disabled style={{ cursor: 'default' }}>
               |
             </Menu.Item>
-            <Menu.Item key="rental-hub">
+            <Menu.Item key="rental-hub" onClick={handleClick}>
               My Rental Hub
+            </Menu.Item>
+          </>
+        )}
+
+        {isLoggedIn && user?.role === 'admin' && (
+          <>
+            <Menu.Item key="system-management" icon={<SettingFilled />} onClick={handleClick}>
+              System Management
+            </Menu.Item>
+            <Menu.Item className="ant-menu-item-divider" key="divider5" disabled style={{ cursor: 'default' }}>
+              |
+            </Menu.Item>
+            <Menu.Item key="approval-requests" onClick={handleClick}>
+              Approval Requests
+            </Menu.Item>
+            <Menu.Item className="ant-menu-item-divider" key="divider6" disabled style={{ cursor: 'default' }}>
+              |
+            </Menu.Item>
+            <Menu.Item key="background-maintenance" onClick={handleClick}>
+              Background Checks
+              {/* & Maintenance */}
             </Menu.Item>
           </>
         )}

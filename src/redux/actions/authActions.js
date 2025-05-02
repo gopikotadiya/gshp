@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOGIN_API, REGISTER_API } from '../../constants/apis'; // Import both APIs
+import { LOGIN_API, USER_BASE_API, REGISTER_API } from '../../constants/apis'; 
 import { Navigate } from 'react-router-dom';
 
 // Registration Action
@@ -39,4 +39,24 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   dispatch({ type: 'LOGOUT' });
+};
+
+
+
+export const updateUserProfile = (userId, values, headers) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      `${USER_BASE_API}/${userId}`,
+      values,
+      { headers }
+    );
+    const updatedUser = response.data;
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    dispatch({ type: 'UPDATE_USER_SUCCESS', payload: updatedUser });
+    return Promise.resolve();
+  } catch (error) {
+    const errorMessage = error.response?.data?.detail || 'Profile update failed';
+    dispatch({ type: 'PROFILE_UPDATE_FAILURE', payload: errorMessage });
+    return Promise.reject(errorMessage);
+  }
 };

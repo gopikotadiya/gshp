@@ -1,4 +1,3 @@
-// src/redux/reducers/authReducer.js
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')) || null, 
   token: localStorage.getItem('token') || null,
@@ -28,6 +27,18 @@ const initialState = {
           token: null,
           isLoggedIn: false,
         }; 
+        case 'UPDATE_USER_SUCCESS':
+          return {
+            ...state,
+            user: action.payload, // Update user data with new payload
+            error: null
+          };
+        
+        case 'PROFILE_UPDATE_FAILURE':
+          return {
+            ...state,
+            // error: action.payload
+          };
       default:
         return state;
     }

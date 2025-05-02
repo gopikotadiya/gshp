@@ -5,6 +5,12 @@ import FeaturesSection from '../components/FeaturesSection';
 import AppFooter from '../components/Footer';
 import ListApartment from '../components/landlord/ListApartment';
 import RentedApartment from '../components/landlord/RentedApartment';
+import ExploreApartments from '../components/tenants/ExploreApartments';
+import FindRoommates from '../components/tenants/FindRoommates';
+import ApprovalRequests from '../components/admin/ApprovalRequests';
+import MaintenanceBackground from '../components/admin/MaintenanceBackground';
+import SystemManagement from '../components/admin/SystemManagement';
+import RentalHub from '../components/tenants/RentalHub';
 
 const LandingPage = () => {
   const [activeComponent, setActiveComponent] = useState('home');
@@ -21,6 +27,18 @@ const LandingPage = () => {
         return <RentedApartment />;
       case 'home':
         return <HeroSection />;
+      case 'explore-apartments' :
+        return <ExploreApartments />
+      case 'find-roommate' :
+        return <FindRoommates />
+        case 'rental-hub':
+          return <RentalHub />;
+      case 'system-management':
+        return <SystemManagement />;
+      case 'approval-requests':
+        return <ApprovalRequests />;
+      case 'background-maintenance':
+        return <MaintenanceBackground />;
       default:
         return <HeroSection />;
     }
