@@ -11,11 +11,9 @@ A full-stack platform connecting international students with verified landlords,
 - [Installation](#installation-)
 - [Configuration](#configuration-)
 - [Running](#running-)
-- [API Docs](#api-documentation-)
 - [Demo](#demo-)
 - [Enhancement](#future-enhancements-)
 - [Contributing](#contributing-)
-- [Support](#support-)
 
 ## Features ✨
 
@@ -133,18 +131,6 @@ npm start
 -   **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
     
 
-
-## 📚 API Documentation
-
-### 🔑 Core Endpoints
-
-| Endpoint          | Method | Auth | Description                      |
-|-------------------|--------|------|----------------------------------|
-| `/auth/login`     | POST   | No   | JWT authentication               |
-| `/properties`     | GET    | Yes  | Filtered property search         |
-| `/applications`   | POST   | Yes  | Submit housing application       |
-| `/users/me`       | GET    | Yes  | Get current user profile         |
-| `/admin/verify`   | POST   | Yes  | Admin verification endpoint      |
 
 ## ▶️ Demo
 
