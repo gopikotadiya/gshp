@@ -133,13 +133,10 @@ npm start
 
 
 ## ▶️ Demo
-
-Watch the walkthrough demo video here:  
-📽️ [GSP Platform Demo](https://your-demo-link.com) _(replace with actual video link)_
-
-## ▶️ Demo
 🎥 **Watch the walkthrough demo video:**  
+
 ![alt text](image.png)
+
 [📽️ GSP Platform Demo](demo/Project%20Demo.mp4)
 
 ## ✅ Future Enhancements
