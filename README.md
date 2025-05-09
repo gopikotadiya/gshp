@@ -1,70 +1,201 @@
-# Getting Started with Create React App
+# GSP - Global Student Housing 🌍🏠
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://python.org)
+[![React](https://img.shields.io/badge/React-18%2B-blue)](https://react.dev)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack platform connecting international students with verified landlords, offering secure housing solutions with advanced matching capabilities.
 
-## Available Scripts
+## Table of Contents
+- [Features](#features-)
+- [Tech Stack](#tech-stack-)
+- [Installation](#installation-)
+- [Configuration](#configuration-)
+- [Running](#running-)
+- [API Docs](#api-documentation-)
+- [Demo](#demo-)
+- [Enhancement](#future-enhancements-)
+- [Contributing](#contributing-)
+- [Support](#support-)
 
-In the project directory, you can run:
+## Features ✨
 
-### `npm start`
+### 👨🎓 Tenant Features
+- Property search with filters (price, location, amenities)
+- Digital application system with document upload
+- Roommate matching algorithm
+- Application status tracking
+- Secure messaging system
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 👔 Landlord Features
+- Property listing management dashboard
+- Tenant application review system
+- Rental calendar & availability management
+- Property analytics & insights
+- Direct communication channel
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 👮 Admin Features
+- User verification & background checks
+- Content moderation tools
+- Application approval workflow
+- Platform usage analytics
+- Fraud detection system
 
-### `npm test`
+## Tech Stack 💻
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Component | Technologies |
+|--|--|
+| **Frontend** | React 18, Ant Design, React Router, Axios, Chart.js, React Hook Form  |
+| **Backend** | Python 3.10, FastAPI, SQLAlchemy, Alembic, Uvicorn, Pydantic  |
+| **Database** | PostgreSQL 14  |
+| **Security** | JWT Authentication, bcrypt, CORS middleware, HTTPS encryption  |
 
-### `npm run build`
+## Installation 🛠️
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- PostgreSQL 14+
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Clone Repository**
+```bash
+git clone https://github.com/gopikotadiya/gshp.git
+cd gshp
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Backend Setup**
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-### `npm run eject`
+3. **Frontend Setup**
+```bash
+cd ../frontend
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Configuration ⚙️
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- PostgreSQL 14+
+- Redis 6.2+
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. **Clone Repository**
+```bash
+git clone https://github.com/gopikotadiya/gshp.git
+cd gshp
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. **Backend Setup**
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-## Learn More
+3. **Frontend Setup**
+```bash
+cd ../frontend
+npm install
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## ⚙️ Configuration
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Create `.env` files in both the `backend` and `frontend` directories with the following content:
 
-### Code Splitting
+### 🔐 `backend/.env`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+DATABASE_URL=postgresql://user:password@localhost:5432/gsp_db
+JWT_SECRET_KEY=your_secure_secret_here
+JWT_REFRESH_SECRET_KEY=your_refresh_secret_here
+REDIS_URL=redis://localhost:6379
+MAIL_USER=your_email@domain.com
+MAIL_PASSWORD=your_email_password
+```
 
-### Analyzing the Bundle Size
+### 🌐 `frontend/.env`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+```bash 
+REACT_APP_API_URL=http://localhost:8000
+REACT_APP_MAP_KEY=your_mapbox_key
+REACT_APP_RECAPTCHA_KEY=your_recaptcha_key
+``` 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+----------
 
-### Advanced Configuration
+## ▶️ Running the Project
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 🗄️ Start Database
 
-### Deployment
+```bash
+sudo service postgresql start # OS-specific command
+```
+----------
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### 🚀 Run Backend
 
-### `npm run build` fails to minify
+```bash
+cd backend
+alembic upgrade head uvicorn app.main:app --reload
+``` 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+----------
+
+### 💻 Run Frontend
+
+```bash
+cd ../frontend
+npm start
+``` 
+
+----------
+
+### 🔗 Access the App
+
+-   **Frontend**: [http://localhost:3000](http://localhost:3000)
+    
+-   **Backend**: [http://localhost:8000](http://localhost:8000)
+    
+-   **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+    
+
+----------
+
+## 📚 API Documentation
+
+### 🔑 Core Endpoints
+
+| Endpoint          | Method | Auth | Description                      |
+|-------------------|--------|------|----------------------------------|
+| `/auth/login`     | POST   | No   | JWT authentication               |
+| `/properties`     | GET    | Yes  | Filtered property search         |
+| `/applications`   | POST   | Yes  | Submit housing application       |
+| `/users/me`       | GET    | Yes  | Get current user profile         |
+| `/admin/verify`   | POST   | Yes  | Admin verification endpoint      |
+
+## ▶️ Demo
+
+Watch the walkthrough demo video here:  
+📽️ [GSP Platform Demo](https://your-demo-link.com) _(replace with actual video link)_
+
+----------
+
+## ✅ Future Enhancements
+
+-   Notification system for new messages and approvals
+    
+-   Payment integration for rent transactions
+    
+-   Language localization for international students
+
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
