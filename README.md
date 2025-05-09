@@ -76,33 +76,6 @@ cd ../frontend
 npm install
 ```
 
-## Configuration ⚙️
-
-### Prerequisites
-- Python 3.10+
-- Node.js 18+
-- PostgreSQL 14+
-
-1. **Clone Repository**
-```bash
-git clone https://github.com/gopikotadiya/gshp.git
-cd gshp
-```
-
-2. **Backend Setup**
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-3. **Frontend Setup**
-```bash
-cd ../frontend
-npm install
-```
-
 ## ⚙️ Configuration
 
 Create `.env` files in both the `backend` and `frontend` directories with the following content:
@@ -127,8 +100,6 @@ REACT_APP_MAP_KEY=your_mapbox_key
 REACT_APP_RECAPTCHA_KEY=your_recaptcha_key
 ``` 
 
-----------
-
 ## ▶️ Running the Project
 
 ### 🗄️ Start Database
@@ -136,7 +107,6 @@ REACT_APP_RECAPTCHA_KEY=your_recaptcha_key
 ```bash
 sudo service postgresql start # OS-specific command
 ```
-----------
 
 ### 🚀 Run Backend
 
@@ -145,7 +115,6 @@ cd backend
 alembic upgrade head uvicorn app.main:app --reload
 ``` 
 
-----------
 
 ### 💻 Run Frontend
 
@@ -154,7 +123,6 @@ cd ../frontend
 npm start
 ``` 
 
-----------
 
 ### 🔗 Access the App
 
@@ -165,7 +133,6 @@ npm start
 -   **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
     
 
-----------
 
 ## 📚 API Documentation
 
@@ -184,7 +151,6 @@ npm start
 Watch the walkthrough demo video here:  
 📽️ [GSP Platform Demo](https://your-demo-link.com) _(replace with actual video link)_
 
-----------
 
 ## ✅ Future Enhancements
 
