@@ -82,7 +82,6 @@ npm install
 - Python 3.10+
 - Node.js 18+
 - PostgreSQL 14+
-- Redis 6.2+
 
 1. **Clone Repository**
 ```bash
