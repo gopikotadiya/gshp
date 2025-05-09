@@ -1,5 +1,0 @@
-app/__pycache__/main.cpython-312.pyc
-app/repository/__pycache__/apartmentsRepository.cpython-312.pyc
-*.pyc
-
-/static
