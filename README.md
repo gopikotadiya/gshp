@@ -139,6 +139,7 @@ Watch the walkthrough demo video here:
 
 ## ▶️ Demo
 🎥 **Watch the walkthrough demo video:**  
+![alt text](image.png)
 [📽️ GSP Platform Demo](demo/Project%20Demo.mp4)
 
 ## ✅ Future Enhancements
