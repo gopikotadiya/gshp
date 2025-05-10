@@ -71,13 +71,13 @@ cd ../frontend
 npm install
 ```
 
-## ⚙️ Configuration Instructions
+## ⚙️ Configuration 
 
 Update these critical values in your existing `backend/.env` file:  
 
 ```ini
 # PostgreSQL 
-POSTGRES_PASSWORD=your_secure_postgres_password  # Replace default "gopi2512"  
+POSTGRES_PASSWORD=your_secure_postgres_password  # Replace default "postgres12"  
 POSTGRES_HOST=localhost                          # Use IP/hostname for remote databases  
 
 # JWT Authentication 
@@ -102,18 +102,6 @@ FRONTEND_URL=http://localhost:3000               # Match your frontend's running
 -   Use strong passwords/keys in production.
     
 -   Never hardcode secrets in shared environments.
-Create `.env` files in both the `backend` and `frontend` directories with the following content:
-
-### 🔐 `backend/.env`
-
-```bash
-DATABASE_URL=postgresql://user:password@localhost:5432/gsp_db
-JWT_SECRET_KEY=your_secure_secret_here
-JWT_REFRESH_SECRET_KEY=your_refresh_secret_here
-REDIS_URL=redis://localhost:6379
-MAIL_USER=your_email@domain.com
-MAIL_PASSWORD=your_email_password
-```
 
 ## ▶️ Running the Project
 
