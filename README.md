@@ -8,7 +8,7 @@ A full-stack platform connecting international students with verified landlords,
 ## Table of Contents
 - [Features](#features-)
 - [Tech Stack](#tech-stack-)
-- [Installation](#installation-)
+- [Installation](#installation-instructions-)
 - [Configuration](#configuration-)
 - [Running](#running-)
 - [Demo](#demo-)
@@ -71,8 +71,37 @@ cd ../frontend
 npm install
 ```
 
-## ⚙️ Configuration
+## ⚙️ Configuration Instructions
 
+Update these critical values in your existing `backend/.env` file:  
+
+```ini
+# PostgreSQL 
+POSTGRES_PASSWORD=your_secure_postgres_password  # Replace default "gopi2512"  
+POSTGRES_HOST=localhost                          # Use IP/hostname for remote databases  
+
+# JWT Authentication 
+SECRET_KEY=your_generated_secure_key             # Replace placeholder (e.g., use `openssl rand -hex 32`)  
+
+# Frontend 
+FRONTEND_URL=http://localhost:3000               # Match your frontend's running address  
+```
+### Essential Checks
+
+✅ Ensure:
+
+1.  PostgreSQL is  **running**  on port  `5432`  (default).
+    
+2.  Database  `ghsp`  exists (matches  `POSTGRES_DB`).
+    
+3.  `.env`  is added to  `.gitignore`  to  **prevent exposure**.
+    
+
+⚠️  **Security Note**
+
+-   Use strong passwords/keys in production.
+    
+-   Never hardcode secrets in shared environments.
 Create `.env` files in both the `backend` and `frontend` directories with the following content:
 
 ### 🔐 `backend/.env`
@@ -85,15 +114,6 @@ REDIS_URL=redis://localhost:6379
 MAIL_USER=your_email@domain.com
 MAIL_PASSWORD=your_email_password
 ```
-
-### 🌐 `frontend/.env`
-
-
-```bash 
-REACT_APP_API_URL=http://localhost:8000
-REACT_APP_MAP_KEY=your_mapbox_key
-REACT_APP_RECAPTCHA_KEY=your_recaptcha_key
-``` 
 
 ## ▶️ Running the Project
 
