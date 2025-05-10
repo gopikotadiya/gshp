@@ -18,25 +18,22 @@ A full-stack platform connecting international students with verified landlords,
 ## Features ✨
 
 ### 👨🎓 Tenant Features
-- Property search with filters (price, location, amenities)
-- Digital application system with document upload
-- Roommate matching algorithm
-- Application status tracking
-- Secure messaging system
+- Browse property listings with filters
+- Submit rental applications and track their status
+- Find potential roommates based on preferences
+- Access lease agreements, payment details, and submit maintenance requests securely
 
 ### 👔 Landlord Features
-- Property listing management dashboard
-- Tenant application review system
-- Rental calendar & availability management
-- Property analytics & insights
-- Direct communication channel
+- Manage property listings (add, edit, remove) and update availability automatically
+- Track payments, lease statuses, and manage rented property information
+- View detailed property information
 
 ### 👮 Admin Features
-- User verification & background checks
-- Content moderation tools
-- Application approval workflow
-- Platform usage analytics
-- Fraud detection system
+- Monitor users and property listings
+- Manage the rental application process
+- Perform automated background verifications
+- Manage leased properties, payments, and maintenance requests
+- Enforce security and compliance policies
 
 ## Tech Stack 💻
 
