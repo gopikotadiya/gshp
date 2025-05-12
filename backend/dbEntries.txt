@@ -1,0 +1,69 @@
+-- Insert 15 users (5 of each role)
+INSERT INTO public.users (email, first_name, last_name, role, password, phone_number, address, location, preference, looking_for_roommate)
+VALUES
+-- Tenants (1-5)
+('tenant1@example.com', 'John', 'Doe', 'tenant', 'hashed_password1', '555-0101', '123 Main St', 'Downtown', 'Quiet environment', true),
+('tenant2@example.com', 'Jane', 'Smith', 'tenant', 'hashed_password2', '555-0102', '456 Oak Ave', 'Suburbs', 'Pet-friendly', false),
+('tenant3@example.com', 'Bob', 'Johnson', 'tenant', 'hashed_password3', '555-0103', '789 Pine Rd', 'Midtown', 'Near public transport', true),
+('tenant4@example.com', 'Alice', 'Williams', 'tenant', 'hashed_password4', '555-0104', '321 Elm St', 'Uptown', 'Vegetarian household', false),
+('tenant5@example.com', 'Charlie', 'Brown', 'tenant', 'hashed_password5', '555-0105', '654 Maple Ave', 'Westside', 'Non-smoker', true),
+
+-- Admins (6-10)
+('admin1@example.com', 'Sarah', 'Miller', 'admin', 'hashed_password6', '555-0201', NULL, NULL, NULL, false),
+('admin2@example.com', 'Michael', 'Davis', 'admin', 'hashed_password7', '555-0202', NULL, NULL, NULL, false),
+('admin3@example.com', 'Emily', 'Wilson', 'admin', 'hashed_password8', '555-0203', NULL, NULL, NULL, false),
+('admin4@example.com', 'David', 'Moore', 'admin', 'hashed_password9', '555-0204', NULL, NULL, NULL, false),
+('admin5@example.com', 'Jessica', 'Taylor', 'admin', 'hashed_password10', '555-0205', NULL, NULL, NULL, false),
+
+-- Landlords (11-15)
+('landlord1@example.com', 'Robert', 'Jones', 'landlord', 'hashed_password11', '555-0301', '1000 Park Ave', 'Downtown', NULL, false),
+('landlord2@example.com', 'Mary', 'Anderson', 'landlord', 'hashed_password12', '555-0302', '2000 Ocean Dr', 'Waterfront', NULL, false),
+('landlord3@example.com', 'William', 'Thomas', 'landlord', 'hashed_password13', '555-0303', '3000 Hill St', 'Mountains', NULL, false),
+('landlord4@example.com', 'Linda', 'Jackson', 'landlord', 'hashed_password14', '555-0304', '4000 Valley Rd', 'Suburbs', NULL, false),
+('landlord5@example.com', 'James', 'White', 'landlord', 'hashed_password15', '555-0305', '5000 Lake View', 'Lakeside', NULL, false);
+
+-- Insert apartments (5-10 per landlord) with empty image arrays
+INSERT INTO public.apartments (landlord_id, title, address, apartment_number, city, state, zip_code, price, bedrooms, bathrooms, images)
+VALUES
+-- Landlord 11 (5 apartments)
+(11, 'Downtown Luxury Suite', '1000 Park Ave', 'PH1', 'New York', 'NY', '10001', 4500.00, 2, 2, ARRAY[]::varchar[]),
+(11, 'Midtown Studio', '1000 Park Ave', '3B', 'New York', 'NY', '10001', 2800.00, 0, 1, ARRAY[]::varchar[]),
+(11, 'Upper East Side 2BR', '1000 Park Ave', '12C', 'New York', 'NY', '10001', 3800.00, 2, 1, ARRAY[]::varchar[]),
+(11, 'Financial District Loft', '1000 Park Ave', 'LOFT4', 'New York', 'NY', '10001', 5200.00, 3, 2, ARRAY[]::varchar[]),
+(11, 'Central Park View', '1000 Park Ave', '9A', 'New York', 'NY', '10001', 6000.00, 2, 2, ARRAY[]::varchar[]),
+
+-- Landlord 12 (7 apartments)
+(12, 'Oceanfront Condo', '2000 Ocean Dr', 'A1', 'Miami', 'FL', '33139', 3200.00, 1, 1, ARRAY[]::varchar[]),
+(12, 'Beachside Villa', '2000 Ocean Dr', 'B2', 'Miami', 'FL', '33139', 4500.00, 2, 2, ARRAY[]::varchar[]),
+(12, 'Marina View Studio', '2000 Ocean Dr', 'C3', 'Miami', 'FL', '33139', 2800.00, 0, 1, ARRAY[]::varchar[]),
+(12, 'Penthouse Paradise', '2000 Ocean Dr', 'PH4', 'Miami', 'FL', '33139', 7500.00, 3, 3, ARRAY[]::varchar[]),
+(12, 'Family Beach House', '2000 Ocean Dr', 'D5', 'Miami', 'FL', '33139', 5500.00, 4, 2, ARRAY[]::varchar[]),
+(12, 'Budget Studio', '2000 Ocean Dr', 'E6', 'Miami', 'FL', '33139', 2200.00, 0, 1, ARRAY[]::varchar[]),
+(12, 'Luxury Suite', '2000 Ocean Dr', 'F7', 'Miami', 'FL', '33139', 4800.00, 2, 2, ARRAY[]::varchar[]),
+
+-- Landlord 13 (6 apartments)
+(13, 'Mountain Retreat', '3000 Hill St', 'CABIN1', 'Denver', 'CO', '80202', 1800.00, 3, 2, ARRAY[]::varchar[]),
+(13, 'Ski-in/Ski-out Condo', '3000 Hill St', 'SUITE2', 'Denver', 'CO', '80202', 3200.00, 2, 1, ARRAY[]::varchar[]),
+(13, 'Downtown Denver Loft', '3000 Hill St', 'LOFT3', 'Denver', 'CO', '80202', 2500.00, 1, 1, ARRAY[]::varchar[]),
+(13, 'Family Mountain Home', '3000 Hill St', 'HOME4', 'Denver', 'CO', '80202', 4200.00, 4, 3, ARRAY[]::varchar[]),
+(13, 'Budget Studio', '3000 Hill St', '5E', 'Denver', 'CO', '80202', 1500.00, 0, 1, ARRAY[]::varchar[]),
+(13, 'Luxury Penthouse', '3000 Hill St', 'PH6', 'Denver', 'CO', '80202', 5800.00, 3, 2, ARRAY[]::varchar[]),
+
+-- Landlord 14 (5 apartments)
+(14, 'Suburban Family Home', '4000 Valley Rd', 'UNIT1', 'Austin', 'TX', '73301', 2200.00, 3, 2, ARRAY[]::varchar[]),
+(14, 'Downtown Austin Studio', '4000 Valley Rd', 'STUDIO2', 'Austin', 'TX', '73301', 1800.00, 0, 1, ARRAY[]::varchar[]),
+(14, 'Tech Hub Apartment', '4000 Valley Rd', '3C', 'Austin', 'TX', '73301', 2800.00, 2, 1, ARRAY[]::varchar[]),
+(14, 'Lake View Condo', '4000 Valley Rd', 'LV4', 'Austin', 'TX', '73301', 3200.00, 2, 2, ARRAY[]::varchar[]),
+(14, 'Historic District Home', '4000 Valley Rd', 'HD5', 'Austin', 'TX', '73301', 3800.00, 4, 2, ARRAY[]::varchar[]),
+
+-- Landlord 15 (10 apartments)
+(15, 'Lakeside Cottage', '5000 Lake View', 'COT1', 'Chicago', 'IL', '60007', 2400.00, 2, 1, ARRAY[]::varchar[]),
+(15, 'Modern Downtown Loft', '5000 Lake View', 'LOFT2', 'Chicago', 'IL', '60007', 3100.00, 1, 1, ARRAY[]::varchar[]),
+(15, 'High-Rise Luxury', '5000 Lake View', 'HR3', 'Chicago', 'IL', '60007', 4200.00, 2, 2, ARRAY[]::varchar[]),
+(15, 'Family Apartment', '5000 Lake View', 'FA4', 'Chicago', 'IL', '60007', 2800.00, 3, 2, ARRAY[]::varchar[]),
+(15, 'Studio Efficiency', '5000 Lake View', 'SE5', 'Chicago', 'IL', '60007', 1900.00, 0, 1, ARRAY[]::varchar[]),
+(15, 'Penthouse Suite', '5000 Lake View', 'PH6', 'Chicago', 'IL', '60007', 5500.00, 3, 3, ARRAY[]::varchar[]),
+(15, 'Garden Unit', '5000 Lake View', 'GU7', 'Chicago', 'IL', '60007', 2100.00, 1, 1, ARRAY[]::varchar[]),
+(15, 'Lake View 2BR', '5000 Lake View', 'LV8', 'Chicago', 'IL', '60007', 3200.00, 2, 1, ARRAY[]::varchar[]),
+(15, 'Budget Room', '5000 Lake View', 'BR9', 'Chicago', 'IL', '60007', 1500.00, 1, 1, ARRAY[]::varchar[]),
+(15, 'Executive Suite', '5000 Lake View', 'ES10', 'Chicago', 'IL', '60007', 4800.00, 2, 2, ARRAY[]::varchar[]);

@@ -1,70 +1,158 @@
-# Getting Started with Create React App
+# GSP - Global Student Housing 🌍🏠
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://python.org)
+[![React](https://img.shields.io/badge/React-18%2B-blue)](https://react.dev)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack platform connecting international students with verified landlords, offering secure housing solutions with advanced matching capabilities.
 
-## Available Scripts
+## Table of Contents
+- [Features](#features-)
+- [Tech Stack](#tech-stack-)
+- [Installation](#installation-instructions-)
+- [Configuration](#configuration-)
+- [Running](#running-)
+- [Demo](#demo-)
+- [Enhancement](#future-enhancements-)
+- [Contributing](#contributing-)
 
-In the project directory, you can run:
+## Features ✨
 
-### `npm start`
+### 👨🎓 Tenant Features
+- Browse property listings with filters
+- Submit rental applications and track their status
+- Find potential roommates based on preferences
+- Access lease agreements, payment details, and submit maintenance requests securely
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 👔 Landlord Features
+- Manage property listings (add, edit, remove) and update availability automatically
+- Track payments, lease statuses, and manage rented property information
+- View detailed property information
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 👮 Admin Features
+- Monitor users and property listings
+- Manage the rental application process
+- Perform automated background verifications
+- Manage leased properties, payments, and maintenance requests
+- Enforce security and compliance policies
 
-### `npm test`
+## Tech Stack 💻
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Component | Technologies |
+|--|--|
+| **Frontend** | React 18, Ant Design, React Router, Axios, Chart.js, React Hook Form  |
+| **Backend** | Python 3.10, FastAPI, SQLAlchemy, Alembic, Uvicorn, Pydantic  |
+| **Database** | PostgreSQL 14  |
+| **Security** | JWT Authentication, bcrypt, CORS middleware, HTTPS encryption  |
 
-### `npm run build`
+## Installation 🛠️
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- PostgreSQL 14+
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Clone Repository**
+```bash
+git clone https://github.com/gopikotadiya/gshp.git
+cd gshp
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Backend Setup**
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-### `npm run eject`
+3. **Frontend Setup**
+```bash
+cd ../frontend
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## ⚙️ Configuration 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Update these critical values in your existing `backend/.env` file:  
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```ini
+# PostgreSQL 
+POSTGRES_PASSWORD=your_secure_postgres_password  # Replace default "postgres12"  
+POSTGRES_HOST=localhost                          # Use IP/hostname for remote databases  
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# JWT Authentication 
+SECRET_KEY=your_generated_secure_key             # Replace placeholder (e.g., use `openssl rand -hex 32`)  
 
-## Learn More
+# Frontend 
+FRONTEND_URL=http://localhost:3000               # Match your frontend's running address  
+```
+### Essential Checks
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+✅ Ensure:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1.  PostgreSQL is  **running**  on port  `5432`  (default).
+    
+2.  Database  `ghsp`  exists (matches  `POSTGRES_DB`).
+    
+3.  `.env`  is added to  `.gitignore`  to  **prevent exposure**.
+    
 
-### Code Splitting
+⚠️  **Security Note**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+-   Use strong passwords/keys in production.
+    
+-   Never hardcode secrets in shared environments.
 
-### Analyzing the Bundle Size
+## ▶️ Running the Project
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 🗄️ Start Database
 
-### Making a Progressive Web App
+```bash
+sudo service postgresql start # OS-specific command
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 🚀 Run Backend
 
-### Advanced Configuration
+```bash
+cd backend
+alembic upgrade head uvicorn app.main:app --reload
+``` 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+### 💻 Run Frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+cd ../frontend
+npm start
+``` 
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 🔗 Access the App
+
+-   **Frontend**: [http://localhost:3000](http://localhost:3000)
+    
+-   **Backend**: [http://localhost:8000](http://localhost:8000)
+    
+-   **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+    
+
+
+## ▶️ Demo
+🎥 **Watch the walkthrough demo video:**  
+
+![alt text](image.png)
+
+[📽️ GSP Platform Demo](demo/Project%20Demo.mp4)
+
+## ✅ Future Enhancements
+
+-   Notification system for new messages and approvals
+    
+-   Payment integration for rent transactions
+    
+-   Language localization for international students
+
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
